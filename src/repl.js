@@ -3,8 +3,9 @@ import { goUp, changeDirectory, listDirectory } from './navigation.js';
 import {csvToJson} from "./commands/csvToJson.js";
 import {jsonToCsv} from "./commands/jsonToCsv.js";
 import { parseArgs } from './utils/argParser.js';
+import {count} from "./commands/count.js";
 
-const COMMANDS_WITH_FLAGS = ['csv-to-json', 'json-to-csv'];
+const COMMANDS_WITH_FLAGS = ['csv-to-json', 'json-to-csv', 'count'];
 
 export function startRepl(state) {
     const rl = readline.createInterface({
@@ -96,6 +97,15 @@ async function handleCommand(command, args, state) {
                     return;
                 }
                 await jsonToCsv(args, state.currentDir);
+                console.log(`You are currently in ${state.currentDir}`);
+                break;
+
+            case 'count':
+                if (!args.input) {
+                    console.log('Invalid input');
+                    return;
+                }
+                await count(args, state.currentDir);
                 console.log(`You are currently in ${state.currentDir}`);
                 break;
 
