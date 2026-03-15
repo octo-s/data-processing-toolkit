@@ -1,17 +1,17 @@
-const path = require('path');
-const fs = require('fs/promises');
+import { readdir, stat } from 'fs/promises';
+import { dirname, resolve, isAbsolute} from 'path';
 
 export function goUp(currentDir) {
-    return path.dirname(currentDir);
+    return dirname(currentDir);
 }
 
 export async function changeDirectory(targetPath, currentDir) {
-    const absolutePath = path.isAbsolute(targetPath)
+    const absolutePath = isAbsolute(targetPath)
         ? targetPath
-        : path.resolve(currentDir, targetPath);
+        : resolve(currentDir, targetPath);
 
     try {
-        const stats = await fs.stat(absolutePath);
+        const stats = await stat(absolutePath);
         const newDir = stats.isDirectory() ? absolutePath : currentDir;
 
         return { success: true, newDir };
@@ -23,7 +23,7 @@ export async function changeDirectory(targetPath, currentDir) {
 
 export async function listDirectory(currentDir) {
     try {
-        const entries = await fs.readdir(currentDir, { withFileTypes: true });
+        const entries = await readdir(currentDir, { withFileTypes: true });
 
         const folders = [];
         const files = [];
