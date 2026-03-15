@@ -1,0 +1,24 @@
+{
+  "name": "data-processing-toolkit",
+  "version": "1.0.0",
+  "description": "an interactive command-line application that performs various useful data processing operations",
+  "homepage": "https://github.com/octo-s/data-processing-toolkit#readme",
+  "bugs": {
+    "url": "https://github.com/octo-s/data-processing-toolkit/issues"
+  },
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "engines": {
+    "node": ">=24.10.0",
+    "npm": ">=10.9.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/octo-s/data-processing-toolkit.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js"
+}
