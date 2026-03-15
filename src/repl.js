@@ -5,8 +5,9 @@ import {jsonToCsv} from "./commands/jsonToCsv.js";
 import { parseArgs } from './utils/argParser.js';
 import {count} from "./commands/count.js";
 import {hash} from "./commands/hash.js";
+import {hashCompare} from "./commands/hashCompare.js";
 
-const COMMANDS_WITH_FLAGS = ['csv-to-json', 'json-to-csv', 'count', 'hash'];
+const COMMANDS_WITH_FLAGS = ['csv-to-json', 'json-to-csv', 'count', 'hash', 'hash-compare'];
 
 export function startRepl(state) {
     const rl = readline.createInterface({
@@ -114,7 +115,13 @@ async function handleCommand(command, args, state) {
                 await hash(args, state.currentDir);
                 break;
 
-            // TODO: add more commands
+            case 'hash-compare':
+                if (!args.input || !args.hash) {
+                    console.log('Invalid input');
+                    return;
+                }
+                await hashCompare(args, state.currentDir);
+                break;
 
             default:
                 console.log('Invalid input');
