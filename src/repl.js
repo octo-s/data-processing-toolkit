@@ -1,7 +1,7 @@
-const readline = require('readline');
-const { goUp, changeDirectory, listDirectory } = require('./navigation');
+import * as readline from 'node:readline';
+import { goUp, changeDirectory, listDirectory } from './navigation.js';
 
-function startRepl(state) {
+export function startRepl(state) {
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
@@ -84,5 +84,3 @@ async function handleCommand(command, args, state) {
         console.log('Operation failed');
     }
 }
-
-module.exports = { startRepl };

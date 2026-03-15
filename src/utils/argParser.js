@@ -1,4 +1,5 @@
-function parseArgs(args) {
+
+export function parseArgs(args) {
     const result = {};
 
     for (let i = 0; i < args.length; i++) {
@@ -20,5 +21,3 @@ function parseArgs(args) {
 
     return result;
 }
-
-module.exports = { parseArgs };

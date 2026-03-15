@@ -1,8 +1,8 @@
-const os = require('os');
-const { startRepl } = require('./repl');
+import { homedir } from 'node:os';
+import { startRepl } from './repl.js';
 
 const state = {
-    currentDir: os.homedir()
+    currentDir: homedir()
 };
 
 console.log('Welcome to Data Processing CLI!');
