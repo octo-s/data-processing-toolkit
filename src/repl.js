@@ -4,8 +4,9 @@ import {csvToJson} from "./commands/csvToJson.js";
 import {jsonToCsv} from "./commands/jsonToCsv.js";
 import { parseArgs } from './utils/argParser.js';
 import {count} from "./commands/count.js";
+import {hash} from "./commands/hash.js";
 
-const COMMANDS_WITH_FLAGS = ['csv-to-json', 'json-to-csv', 'count'];
+const COMMANDS_WITH_FLAGS = ['csv-to-json', 'json-to-csv', 'count', 'hash'];
 
 export function startRepl(state) {
     const rl = readline.createInterface({
@@ -49,10 +50,11 @@ export function startRepl(state) {
 
 async function handleCommand(command, args, state) {
     try {
+        let handled = true;
+
         switch (command) {
             case 'up':
                 state.currentDir = goUp(state.currentDir);
-                console.log(`You are currently in ${state.currentDir}`);
                 break;
 
             case 'cd':
@@ -63,7 +65,6 @@ async function handleCommand(command, args, state) {
                 const result = await changeDirectory(args[0], state.currentDir);
                 if (result.success) {
                     state.currentDir = result.newDir;
-                    console.log(`You are currently in ${state.currentDir}`);
                 } else {
                     console.log('Operation failed');
                 }
@@ -76,7 +77,6 @@ async function handleCommand(command, args, state) {
                         const typeStr = item.type === 'folder' ? '[folder]' : '[file]';
                         console.log(`${item.name}\t${typeStr}`);
                     }
-                    console.log(`You are currently in ${state.currentDir}`);
                 } else {
                     console.log('Operation failed');
                 }
@@ -88,7 +88,6 @@ async function handleCommand(command, args, state) {
                     return;
                 }
                 await csvToJson(args, state.currentDir);
-                console.log(`You are currently in ${state.currentDir}`);
                 break;
 
             case 'json-to-csv':
@@ -97,7 +96,6 @@ async function handleCommand(command, args, state) {
                     return;
                 }
                 await jsonToCsv(args, state.currentDir);
-                console.log(`You are currently in ${state.currentDir}`);
                 break;
 
             case 'count':
@@ -106,13 +104,25 @@ async function handleCommand(command, args, state) {
                     return;
                 }
                 await count(args, state.currentDir);
-                console.log(`You are currently in ${state.currentDir}`);
+                break;
+
+            case 'hash':
+                if (!args.input) {
+                    console.log('Invalid input');
+                    return;
+                }
+                await hash(args, state.currentDir);
                 break;
 
             // TODO: add more commands
 
             default:
                 console.log('Invalid input');
+                handled = false;
+        }
+
+        if (handled) {
+            console.log(`You are currently in ${state.currentDir}`);
         }
     } catch (error) {
         console.log('Operation failed');
