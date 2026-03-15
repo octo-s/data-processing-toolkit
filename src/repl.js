@@ -2,6 +2,9 @@ import * as readline from 'node:readline';
 import { goUp, changeDirectory, listDirectory } from './navigation.js';
 import {csvToJson} from "./commands/csvToJson.js";
 import {jsonToCsv} from "./commands/jsonToCsv.js";
+import { parseArgs } from './utils/argParser.js';
+
+const COMMANDS_WITH_FLAGS = ['csv-to-json', 'json-to-csv'];
 
 export function startRepl(state) {
     const rl = readline.createInterface({
@@ -27,8 +30,9 @@ export function startRepl(state) {
             const parts = trimmedInput.split(/\s+/);
             const command = parts[0];
             const args = parts.slice(1);
+            const parsedArgs = COMMANDS_WITH_FLAGS.includes(command) ? parseArgs(args) : args;
 
-            await handleCommand(command, args, state);
+            await handleCommand(command, parsedArgs, state);
 
             prompt();
         });
