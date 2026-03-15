@@ -1,6 +1,7 @@
 import * as readline from 'node:readline';
 import { goUp, changeDirectory, listDirectory } from './navigation.js';
 import {csvToJson} from "./commands/csvToJson.js";
+import {jsonToCsv} from "./commands/jsonToCsv.js";
 
 export function startRepl(state) {
     const rl = readline.createInterface({
@@ -82,6 +83,15 @@ async function handleCommand(command, args, state) {
                     return;
                 }
                 await csvToJson(args, state.currentDir);
+                console.log(`You are currently in ${state.currentDir}`);
+                break;
+
+            case 'json-to-csv':
+                if (!args.input || !args.output) {
+                    console.log('Invalid input');
+                    return;
+                }
+                await jsonToCsv(args, state.currentDir);
                 console.log(`You are currently in ${state.currentDir}`);
                 break;
 
