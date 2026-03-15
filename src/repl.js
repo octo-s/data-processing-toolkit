@@ -8,8 +8,9 @@ import {hash} from "./commands/hash.js";
 import {hashCompare} from "./commands/hashCompare.js";
 import {decrypt} from "./commands/decrypt.js";
 import {encrypt} from "./commands/encrypt.js";
+import {logStats} from './commands/logStats.js';
 
-const COMMANDS_WITH_FLAGS = ['csv-to-json', 'json-to-csv', 'count', 'hash', 'hash-compare', 'encrypt', 'decrypt'];
+const COMMANDS_WITH_FLAGS = ['csv-to-json', 'json-to-csv', 'count', 'hash', 'hash-compare', 'encrypt', 'decrypt', 'log-stats'];
 
 export function startRepl(state) {
     const rl = readline.createInterface({
@@ -139,6 +140,13 @@ async function handleCommand(command, args, state) {
                     return;
                 }
                 await decrypt(args, state.currentDir);
+                break;
+            case 'log-stats':
+                if (!args.input || !args.output) {
+                    console.log('Invalid input');
+                    return;
+                }
+                await logStats(args, state.currentDir);
                 break;
 
             default:
